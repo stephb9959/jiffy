@@ -66,7 +66,7 @@ static char* shifts[NUM_SHIFTS] = {
 };
 
 
-Encoder*
+static Encoder*
 enc_new(ErlNifEnv* env)
 {
     jiffy_st* st = (jiffy_st*) enif_priv_data(env);
@@ -99,7 +99,7 @@ enc_new(ErlNifEnv* env)
     return e;
 }
 
-int
+static int
 enc_init(Encoder* e, ErlNifEnv* env)
 {
     e->env = env;
@@ -116,20 +116,20 @@ enc_destroy(ErlNifEnv* env, void* obj)
     }
 }
 
-ERL_NIF_TERM
+static ERL_NIF_TERM
 enc_error(Encoder* e, const char* msg)
 {
     //assert(0 && msg);
     return make_error(e->atoms, e->env, msg);
 }
 
-ERL_NIF_TERM
+static ERL_NIF_TERM
 enc_obj_error(Encoder* e, const char* msg, ERL_NIF_TERM obj)
 {
     return make_obj_error(e->atoms, e->env, msg, obj);
 }
 
-int
+static int
 enc_flush(Encoder* e)
 {
     ERL_NIF_TERM bin;
@@ -411,7 +411,7 @@ enc_object_key(ErlNifEnv *env, Encoder* e, ERL_NIF_TERM val)
 #define P11 100000000000L
 #define P12 1000000000000L
 
-int
+static int
 digits10(ErlNifUInt64 v)
 {
     if (v < P01) return 1;
@@ -435,7 +435,7 @@ digits10(ErlNifUInt64 v)
     return 12 + digits10(v / P12);
 }
 
-unsigned int
+static unsigned int
 u64ToAsciiTable(unsigned char *dst, ErlNifUInt64 value)
 {
     static const char digits[201] =
@@ -464,7 +464,7 @@ u64ToAsciiTable(unsigned char *dst, ErlNifUInt64 value)
     return length;
 }
 
-unsigned
+static unsigned
 i64ToAsciiTable(unsigned char *dst, ErlNifSInt64 value)
 {
     if (value < 0) {
@@ -596,7 +596,7 @@ enc_comma(Encoder* e)
 }
 
 #if MAP_TYPE_PRESENT
-int
+static int
 enc_map_to_ejson(ErlNifEnv* env, ERL_NIF_TERM map, ERL_NIF_TERM* out)
 {
     ErlNifMapIterator iter;
