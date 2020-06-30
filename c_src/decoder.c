@@ -66,7 +66,7 @@ typedef struct {
     int             st_top;
 } Decoder;
 
-Decoder*
+static Decoder*
 dec_new(ErlNifEnv* env)
 {
     jiffy_st* st = (jiffy_st*) enif_priv_data(env);
@@ -105,7 +105,7 @@ dec_new(ErlNifEnv* env)
     return d;
 }
 
-void
+static void
 dec_init(Decoder* d, ErlNifEnv* env, ERL_NIF_TERM arg, ErlNifBinary* bin)
 {
     d->env = env;
@@ -125,7 +125,7 @@ dec_destroy(ErlNifEnv* env, void* obj)
     }
 }
 
-ERL_NIF_TERM
+static ERL_NIF_TERM
 dec_error(Decoder* d, const char* atom)
 {
     ERL_NIF_TERM pos = enif_make_int(d->env, d->i+1);
@@ -134,20 +134,20 @@ dec_error(Decoder* d, const char* atom)
     return enif_make_tuple2(d->env, d->atoms->atom_error, ret);
 }
 
-char
+static char
 dec_curr(Decoder* d)
 {
     assert(d->st_top > 0);
     return d->st_data[d->st_top - 1];
 }
 
-int
+static int
 dec_top(Decoder* d)
 {
     return d->st_top;
 }
 
-void
+static void
 dec_push(Decoder* d, char val)
 {
     int new_sz;
@@ -166,7 +166,7 @@ dec_push(Decoder* d, char val)
     d->st_data[d->st_top++] = val;
 }
 
-char
+static char
 dec_pop(Decoder* d) {
     char current = st_invalid;
 
@@ -179,7 +179,7 @@ dec_pop(Decoder* d) {
     return current;
 }
 
-void
+static void
 dec_pop_assert(Decoder* d, char val)
 {
     char current = dec_pop(d);
@@ -187,7 +187,7 @@ dec_pop_assert(Decoder* d, char val)
     (void)current;
 }
 
-int
+static int
 dec_string(Decoder* d, ERL_NIF_TERM* value)
 {
     int has_escape = 0;
@@ -371,7 +371,7 @@ parse:
     return 1;
 }
 
-int
+static int
 dec_number(Decoder* d, ERL_NIF_TERM* value)
 {
     ERL_NIF_TERM num_type = d->atoms->atom_error;
@@ -618,7 +618,7 @@ parse:
     return 1;
 }
 
-ERL_NIF_TERM
+static ERL_NIF_TERM
 make_empty_object(ErlNifEnv* env, int ret_map)
 {
 #if MAP_TYPE_PRESENT
@@ -630,7 +630,7 @@ make_empty_object(ErlNifEnv* env, int ret_map)
     return enif_make_tuple1(env, enif_make_list(env, 0));
 }
 
-ERL_NIF_TERM
+static ERL_NIF_TERM
 make_array(ErlNifEnv* env, ERL_NIF_TERM list)
 {
     ERL_NIF_TERM ret = enif_make_list(env, 0);
