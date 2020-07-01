@@ -1,3 +1,7 @@
+#### Note: all this work was done by @davisp. I take no credit. The only reason for this project to exist here is to provide a version of jiffy that works on the latest version of Erlang (23) and remove the dependencies on rebar/enc that were included in the project previously. This project uses erlang.mk only. I hope this is useful to you.
+
+
+
 Jiffy - JSON NIFs for Erlang
 ============================
 
